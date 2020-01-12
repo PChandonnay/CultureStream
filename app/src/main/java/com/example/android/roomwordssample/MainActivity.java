@@ -16,7 +16,9 @@ package com.example.android.roomwordssample;
  * limitations under the License.
  */
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -45,6 +47,8 @@ import javax.net.ssl.HttpsURLConnection;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -65,6 +69,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Ask camera permission
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    1);
+        }
 
         //Setup the recyclerview for RoomWords
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
@@ -91,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NewWordActivity.class);
+                //Intent intent = new Intent(MainActivity.this, NewWordActivity.class);
+                Intent intent = new Intent(MainActivity.this, SendStreamActivity.class);
                 startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
             }
         });
@@ -101,7 +114,8 @@ public class MainActivity extends AppCompatActivity {
         fabv.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                Intent intent = new Intent(MainActivity.this, GetStreamActivity.class);
+                /*Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
                 if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
                     Uri videoUri;
                     takeVideoIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -114,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                     }catch(Exception e) {
                         e.printStackTrace();
                     }
-                }
+                }*/
             }
         });
 
@@ -135,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Word insert result
         if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE ){
-            if(resultCode == RESULT_OK) {
+            /*if(resultCode == RESULT_OK) {
                 Word word = new Word(data.getStringExtra(NewWordActivity.EXTRA_REPLY));
                 mWordViewModel.insert(word);
             } else {
@@ -143,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                         getApplicationContext(),
                         R.string.empty_not_saved,
                         Toast.LENGTH_LONG).show();
-            }
+            }*/
         }
 
         //Camera result

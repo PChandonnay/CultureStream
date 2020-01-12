@@ -25,7 +25,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
 
     //RTMP
-    implementation 'de.mrmaffen:libvlc-android:2.1.12@aar'
+    implementation 'de.mrmaffen:vlc-android-sdk:2.0.6'
+    implementation project(':libstreaming');
 
     // Dependencies for working with Architecture components
     // You'll probably have to update the version numbers in build.gradle (Project)
